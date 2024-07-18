@@ -27,22 +27,23 @@ There are two labels that can be used to trigger the code review process:
 3. Create a `.github/workflows/main.yml` file in your repository and add the following content:
 
 ```yaml
-name: AI Code Reviewer
+name: SCI Code Reviewer
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
+    types: [ labeled ]
+    branches:
+       - beta
 permissions: write-all
 jobs:
   review:
+    if: ${{ github.event.label.name == 'ai-review' || github.event.label.name == 'ai-pr-desc' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: AI Code Reviewer
+      - name: Code Reviewer
         uses: moneyforward/sci_codereview@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # The GITHUB_TOKEN is there by default so you just need to keep it like it is and not necessarily need to add it as secret as it will throw an error. [More Details](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret)
