@@ -1,8 +1,12 @@
-# AI Code Reviewer
+# SCI Code Reviewer
 
-AI Code Reviewer is a GitHub Action that leverages OpenAI's GPT-4 API to provide intelligent feedback and suggestions on
-your pull requests. This powerful tool helps improve code quality and saves developers time by automating the code
-review process.
+SCI Code Reviewer is a GitHub Action that leverages OpenAI's GPT-4 API to provide intelligent feedback and suggestions on
+your pull requests. This powerful tool helps improve code quality and saves developers time by partially automating the code
+review process. The code review process is initiated when a specific label is added to a pull request. This approach reduce the noise 
+of automated code review comments but also provide the flexibility to developers to choose when to trigger the code review process. 
+There are two labels that can be used to trigger the code review process:
+- `ai-review`: This label is used to trigger the code review process. When this label is added to a pull request, the code review process is initiated.
+- `ai-pr-desc`: This label is used to generate Pull Request description follow an predefined template.
 
 ## Features
 
@@ -10,6 +14,7 @@ review process.
 - Provides intelligent comments and suggestions for improving your code.
 - Filters out files that match specified exclude patterns.
 - Easy to set up and integrate into your GitHub workflow.
+- Generate Pull Request description follow an predefined template.
 
 ## Setup
 
@@ -38,7 +43,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: AI Code Reviewer
-        uses: your-username/ai-code-reviewer@main
+        uses: moneyforward/sci-codereview@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # The GITHUB_TOKEN is there by default so you just need to keep it like it is and not necessarily need to add it as secret as it will throw an error. [More Details](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret)
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -46,14 +51,11 @@ jobs:
           exclude: "**/*.json, **/*.md" # Optional: exclude patterns separated by commas
 ```
 
-4. Replace `your-username` with your GitHub username or organization name where the AI Code Reviewer repository is
-   located.
+4. Customize the `exclude` input if you want to ignore certain file patterns from being reviewed.
 
-5. Customize the `exclude` input if you want to ignore certain file patterns from being reviewed.
-
-6. Commit the changes to your repository, and AI Code Reviewer will start working on your future pull requests.
+5. Commit the changes to your repository, and AI Code Reviewer will start working on your future pull requests.
 
 ## How It Works
 
-The AI Code Reviewer GitHub Action retrieves the pull request diff, filters out excluded files, and sends code chunks to
+The SCI Code Reviewer GitHub Action retrieves the pull request diff, filters out excluded files, and sends code chunks to
 the OpenAI API. It then generates review comments based on the AI's response and adds them to the pull request.
